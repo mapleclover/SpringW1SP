@@ -2,17 +2,17 @@ package com.example.calculator;
 
 import java.util.Scanner;
 
-public class Calculator3 {
+public class App2 {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        double firstNumber;
-        double secondNumber;
+        int firstNumber;
+        int secondNumber;
         char operation;
-        double result;
+        int result;
         String finish;
         boolean run = true;
 
-        ArithmeticCalculator calculator = new ArithmeticCalculator();
+        Calculator calculator = new Calculator();
 
         while(run) {
             System.out.print("첫 번째 숫자를 입력하세요: ");
@@ -34,14 +34,16 @@ public class Calculator3 {
             System.out.print("사칙연산 기호를 입력하세요: ");
             operation = sc.nextLine().charAt(0);
 
-            result = calculator.calculate(firstNumber, secondNumber, operation);
-
-            if (calculator.errorMsg != null) {
-                System.out.println(calculator.errorMsg);
-                continue;
-            } else {
-                calculator.saveResult(result);
+            try {
+                result = calculator.calculate(firstNumber, secondNumber, operation);
             }
+            catch(IllegalArgumentException e1) {
+                System.out.println(e1.getMessage());
+                continue;
+            }
+
+            calculator.saveResult(result);
+
             System.out.println("결과: " + result);
 
             calculator.printResult();

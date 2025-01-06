@@ -1,72 +1,65 @@
 package com.example.calculator;
 
-import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Calculator {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int firstNumber;
-        int secondNumber;
-        char operation;
-        int result = 0;
-        String finish;
-        boolean run = true;
-        boolean incorrectInput = true;
+    private ArrayList<Integer> results = new ArrayList<>();
 
-        while(run) {
-            System.out.print("첫 번째 숫자를 입력하세요: ");
-            while (!sc.hasNextInt()) {
-                sc.next();
-                System.out.print("잘못 입력하셨습니다. 첫 번째 숫자를 입력하세요: ");
-            }
-            firstNumber = sc.nextInt();
-            sc.nextLine();
+    public int calculate(int firstNumber, int secondNumber, char operator)
+    {
+        int result;
 
-            System.out.print("두 번째 숫자를 입력하세요: ");
-            while (!sc.hasNextInt()) {
-                sc.next();
-                System.out.print("잘못 입력하셨습니다. 두 번째 숫자를 입력하세요: ");
-            }
-            secondNumber = sc.nextInt();
-            sc.nextLine();
-
-            System.out.print("사칙연산 기호를 입력하세요: ");
-            while (incorrectInput) {
-                operation = sc.nextLine().charAt(0);
-
-                switch (operation) {
-                    case '+':
-                        result = firstNumber + secondNumber;
-                        incorrectInput = false;
-                        break;
-                    case '-':
-                        result = firstNumber - secondNumber;
-                        incorrectInput = false;
-                        break;
-                    case '*':
-                        result = firstNumber * secondNumber;
-                        incorrectInput = false;
-                        break;
-                    case '/':
-                        if (secondNumber == 0) {
-                            System.out.println("나눗셈 연산에서 분모(두번째 정수)에 0이 입력될 수 없습니다.");
-                            System.out.print("사칙연산 기호를 입력하세요: ");
-                            continue;
-                        }
-                        result = firstNumber / secondNumber;
-                        incorrectInput = false;
-                        break;
-                    default:
-                        System.out.print("연산부호 입력이  잘못되었습니다. 다시 입력하세요: ");
-                        break;
+        switch (operator) {
+            case '+':
+                result = firstNumber + secondNumber;
+                break;
+            case '-':
+                result = firstNumber - secondNumber;
+                break;
+            case '*':
+                result = firstNumber * secondNumber;
+                break;
+            case '/':
+                if (secondNumber == 0) {
+                    throw new IllegalArgumentException("나눗셈 연산에서 분모(두번째 정수)에 0이 입력될 수 없습니다.");
                 }
-            }
-            System.out.println("결과: " + result);
-
-            System.out.println("더 계산하시겠습니까? (exit 입력 시 종료)");
-            finish = sc.nextLine();
-            if (finish.equals("exit"))
-                run = false;
+                result = firstNumber / secondNumber;
+                break;
+            default:
+                throw new IllegalArgumentException("연산부호 입력이  잘못되었습니다.");
         }
+
+        return result;
+    }
+
+    public void saveResult(int result)
+    {
+        results.add(result);
+    }
+
+    public void removeResult()
+    {
+        if(!results.isEmpty())
+            results.remove(0);
+    }
+
+    public void printResult() {
+        if (results.isEmpty()) {
+            System.out.print("계산 기록이 없습니다.");
+        } else {
+            System.out.print("지금까지의 계산 결과: ");
+            for (int res : results) {
+                System.out.print(res + "  ");
+            }
+            System.out.println();
+        }
+    }
+
+    public ArrayList<Integer> getResults(){
+        return new ArrayList<>(results);
+    }
+
+    public void setResults(ArrayList<Integer> results) {
+        this.results = results;
     }
 }
